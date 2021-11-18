@@ -1,22 +1,10 @@
 version: "3.3"
 services:
-  apiventa:
-    build: ./
+  balancer:
+    build: ./load-balancer/
     ports:
-      - "9000:80"
-    environment:
-      SERVER: "sqlserver"
-      PORT: 1433
-      DATABASE: "AppVentaDb"
-      USERNAME: "sa"
-      PASSWORD: "Channel321*"
-      INTEGRATED_SECURITY: "false"
-      TRUST_SERVER_CERTIFICATE: "true"
-    depends_on:
-      - database
-    links:
-      - "database"
-      apiventa2:
+       - "9000:80"
+  apiventa:
     build: ./
     ports:
       - "9001:80"
@@ -32,10 +20,26 @@ services:
       - database
     links:
       - "database"
-      apiventa3:
+  apiventa2:
     build: ./
     ports:
       - "9002:80"
+    environment:
+      SERVER: "sqlserver"
+      PORT: 1433
+      DATABASE: "AppVentaDb"
+      USERNAME: "sa"
+      PASSWORD: "Channel321*"
+      INTEGRATED_SECURITY: "false"
+      TRUST_SERVER_CERTIFICATE: "true"
+    depends_on:
+      - database
+    links:
+      - "database"
+  apiventa3:
+    build: ./
+    ports:
+      - "9003:80"
     environment:
       SERVER: "sqlserver"
       PORT: 1433
